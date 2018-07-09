@@ -9,7 +9,6 @@ import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class PageFour extends PageView
 {
@@ -20,7 +19,7 @@ public class PageFour extends PageView
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.page_webview, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText("建立一個 WebView 放入以下網站，建立一個Switch，打開Switch可以觸發網站右下角齒輪按鈕的選單，關閉則讓選單消失。");
+        textView.setText(R.string.page_four_tips);
         myWebView = (WebView) view.findViewById(R.id.webview);
         myWebView.getSettings().setJavaScriptEnabled(true);//允許可以使用javascript
         myWebView.requestFocus();
@@ -34,11 +33,16 @@ public class PageFour extends PageView
             {
                 if (isChecked)
                 {
-                    Log.d("","checked") ;
+                    //Log.d("TagSampleAppProject","switchButton checked") ;
+                    //Android調用JS腳本是非常簡單的，直接Webview調用loadUrl方法，裡面是JS的方法名，並可以傳入參數，javascript：xxx方法名需要和JS方法名相同
+                    //Ex: yourWebView.loadUrl("javascript:functionName");
+                    myWebView.loadUrl("javascript:settingsMenu.show()");
+
                 }
                 else
                 {
-                    Log.d("","unchecked") ;
+                    //Log.d("TagSampleAppProject","switchButton unchecked") ;
+                    myWebView.loadUrl("javascript:settingsMenu.close()");
                 }
             }
         });

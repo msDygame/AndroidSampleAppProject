@@ -9,8 +9,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="55dp"
-        android:ems="10"
-        android:inputType="textMultiLine" />
+        android:ems="10" />
 
     <Button
         android:id="@+id/httpGetButton"

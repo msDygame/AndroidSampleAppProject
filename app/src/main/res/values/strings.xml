@@ -2,6 +2,12 @@
     <string name="app_name">AndroidSampleAppProject</string>
     <string name="title_activity_main">TabActivity</string>
     <string name="title_activity_login">TabTest</string>
+    <string name="login_activity_tips">首頁選擇Google帳號或Facebook帳號登入。主頁使用ViewPager，TabLayout。</string>
+    <string name="page_one_tips">建立列表，點擊任一個RecyclerView的item則開啟WebView顯示連結，以 OkHttp  來處理網路資料。</string>
+    <string name="page_two_tips">以Firebase後台建立一個資料庫，並隨意新增資料。Button的功能分別為新增一筆隨機資料、刪除最後一筆資料，按下Button後，畫面須即時更新為最新狀態。</string>
+    <string name="page_three_tips">建立一個影片播放器，播放這個影片串流檔案。</string>
+    <string name="page_four_tips">建立一個 WebView 放入以下網站，建立一個Switch，打開Switch可以觸發網站右下角齒輪按鈕的選單，關閉則讓選單消失。</string>
+    <string name="page_five_tips">用 ConstraintLayout 設計一個計算機的畫面，不需要功能。</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>

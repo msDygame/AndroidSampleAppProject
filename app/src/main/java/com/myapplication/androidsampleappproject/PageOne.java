@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,64 +34,63 @@ public class PageOne extends PageView
     RecyclerView recyclerView;
     String sUrl = "http://data.taipei/opendata/datalist/apiAccess?scope=resourceAquire&rid=5a0e5fbb-72f8-41c6-908e-2fb25eff9b8a" ;
     final OkHttpClient client = new OkHttpClient();
+    CustomRecyclerView recyclerViewAdapter;
     public PageOne(Context context)
     {
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.page_http, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText("建立列表，點擊任一個RecyclerView的item則開啟WebView顯示連結，以 OkHttp  來處理網路資料。");
+        textView.setText(R.string.page_one_tips);
         httpGetButton = (Button) view.findViewById(R.id.httpGetButton);
         httpPostButton =(Button) view.findViewById(R.id.httpPostBbutton);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        editText = (EditText) view.findViewById(R.id.editText);
+        editText.setText(sUrl);
         final ExecutorService service = Executors.newSingleThreadExecutor();
         httpGetButton.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                String content = editText.getText().toString();
-                boolean is = TextUtils.isEmpty(content) ;
-                if (is == false)
-                {
-                    Log.d("TagSampleAppProject", "GET  setOnClickListener.\n");
-                }
                 service.submit(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        Log.d("TagSampleAppProject", "GET  newSingleThreadExecutor.\n");
                         Request request = new Request.Builder().url(sUrl).build();
                         try
                         {
-                            Log.d("TagSampleAppProject", "GET  Request.\n");
+                            Log.d("TagSampleAppProject", "Button GET  Request.\n");
                             final Response response = client.newCall(request).execute();
                             try
                             {
                                 final String resStr = response.body().string();
-                                Log.d("TagSampleAppProject", resStr);
+                                //Log.d("TagSampleAppProject", "Request response="+resStr);
                                 JSONObject json = new JSONObject(resStr);
+
                                 int jsonCount =(int)json.getJSONObject("result").get("count");
-                                Object jsonOb = json.getJSONObject("result").get("results");
                                 JSONArray jsonArray = json.getJSONObject("result").getJSONArray("results");
 
-                                Log.d("TagSampleAppProject", " count="+jsonCount);
-                                Log.d("TagSampleAppProject", jsonOb.toString());
-
-                                final String owner = jsonArray.getJSONObject(0).getString("E_Name");
-                                Log.d("TagSampleAppProject",owner);
+                                int iCount = (int)jsonCount;
+                                //Log.d("TagSampleAppProject", " count="+iCount);
+                                ArrayList<String> arrayName = new ArrayList<>();
+                                ArrayList<String> arrayFile = new ArrayList<>();
+                                ArrayList<String> arrayPath = new ArrayList<>();
+                                for (int i = 0 ; i < iCount ; i++)
+                                {
+                                    final String owner = jsonArray.getJSONObject(i).getString("E_Name");
+                                    final String image = jsonArray.getJSONObject(i).getString("E_Pic_URL");
+                                    final String path = jsonArray.getJSONObject(i).getString("E_URL");
+                                    arrayName.add(owner);
+                                    arrayFile.add(image);
+                                    arrayPath.add(path);
+                                }
+                                recyclerViewAdapter.setData(arrayName,arrayFile,arrayPath);
                             }
                             catch (JSONException e)
                             {
                                 Log.d("TagSampleAppProject", e.toString());
                             }
-                            /*    runOnUiThread(new Runnable()
-                                                {
-                                                  @Override
-                                                 public void run() {
-                                                       editText.setText(resStr);
-                                                 }
-                                                 });
-                                                */
                         }
                         catch (IOException e)
                         {
@@ -114,18 +114,22 @@ public class PageOne extends PageView
                 }
             }
         });
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        /*
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        ItemData itemsData[] = {
-                new ItemData("hello1"),
-                new ItemData("hello2"),
-                new ItemData("hello3"),
-        };
-        MyAdapter mAdapter = new MyAdapter(itemsData);
-        recyclerView.setAdapter(mAdapter);*/
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        editText = (EditText) view.findViewById(R.id.editText);
+        ArrayList<String> myDataSet = new ArrayList<>();
+        ArrayList<String> myFileSet = new ArrayList<>();
+        ArrayList<String> myPathSet = new ArrayList<>();
+        for(int i = 0; i < 10; i++)
+        {
+            myDataSet.add(Integer.toString(i));
+            myFileSet.add("");
+            myPathSet.add("");
+        }
+        recyclerViewAdapter = new CustomRecyclerView(context,myDataSet,myFileSet,myPathSet);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(recyclerViewAdapter);
         addView(view);
     }
 }

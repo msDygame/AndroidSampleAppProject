@@ -6,7 +6,7 @@ android {
         applicationId "com.myapplication.androidsampleappproject"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 23
+        versionCode 40
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -29,6 +29,7 @@ dependencies {
     implementation 'com.android.support:support-v4:28.0.0-alpha3'
     implementation 'com.squareup.okhttp3:okhttp:3.4.1'
     implementation 'com.android.support:recyclerview-v7:28.0.0-alpha3'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

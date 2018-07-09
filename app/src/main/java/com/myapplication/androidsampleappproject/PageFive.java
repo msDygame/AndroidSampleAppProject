@@ -12,7 +12,7 @@ public class PageFive extends PageView
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.page_calculator, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText("用 ConstraintLayout 設計一個計算機的畫面，不需要功能。");
+        textView.setText(R.string.page_five_tips);
         addView(view);
     }
 }

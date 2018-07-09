@@ -28,7 +28,7 @@ public class PageTwo extends PageView
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.page_firebase, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
-        textView.setText("以Firebase後台建立一個資料庫，並隨意新增資料。Button的功能分別為新增一筆隨機資料、刪除最後一筆資料，按下Button後，畫面須即時更新為最新狀態。");
+        textView.setText(R.string.page_two_tips);
         addButton = (Button) view.findViewById(R.id.addButton);
         deleteButton =(Button) view.findViewById(R.id.deleteBbutton);
         addButton.setOnClickListener(new OnClickListener()
@@ -84,8 +84,8 @@ public class PageTwo extends PageView
                     String sKey = ds.getKey().toString() ;
                     String sValue = ds.getValue().toString() ;
                     fileDBAdapter.add(sKey+" "+sValue);
-                    Log.d("TagSampleAppProject","getKey()"+sKey);
-                    Log.d("TagSampleAppProject","getValue()="+sValue);
+                    //Log.d("TagSampleAppProject","getKey()"+sKey);
+                    //Log.d("TagSampleAppProject","getValue()="+sValue);
                 }
             }
             @Override
