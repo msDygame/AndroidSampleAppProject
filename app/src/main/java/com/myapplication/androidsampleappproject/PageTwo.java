@@ -1,6 +1,8 @@
 package com.myapplication.androidsampleappproject;
 
 import android.content.Context;
+import android.os.Build;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +19,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.UUID;
+
 public class PageTwo extends PageView
 {
     ArrayAdapter<String> fileDBAdapter;
     Button addButton ;
     Button deleteButton;
     EditText editText;
+    String sTarget = "";
     public PageTwo(Context context)
     {
         super(context);
@@ -30,7 +35,7 @@ public class PageTwo extends PageView
         TextView textView = (TextView) view.findViewById(R.id.textView);
         textView.setText(R.string.page_two_tips);
         addButton = (Button) view.findViewById(R.id.addButton);
-        deleteButton =(Button) view.findViewById(R.id.deleteBbutton);
+        deleteButton =(Button) view.findViewById(R.id.deleteButton);
         addButton.setOnClickListener(new OnClickListener()
         {
             @Override
@@ -41,9 +46,10 @@ public class PageTwo extends PageView
                 if (is == false)
                 {
                     DatabaseReference ref = FirebaseDatabase.getInstance().getReference(content);
-                    Log.d("TagSampleAppProject", "DatabaseReference  setValue.\n");
-                    Log.d("TagSampleAppProject", content);
-                    ref.setValue("Hello, World!");
+                    //Log.d("TagSampleAppProject", "DatabaseReference  setValue.\n");
+                    //Log.d("TagSampleAppProject", content);
+                    String sValue = getRandomNumber();
+                    ref.setValue(sValue);
                 }
 
             }
@@ -53,13 +59,13 @@ public class PageTwo extends PageView
             @Override
             public void onClick(View view)
             {
-                String content = editText.getText().toString();
-                boolean is = TextUtils.isEmpty(content);
+                //String content = editText.getText().toString();
+                boolean is = TextUtils.isEmpty(sTarget);
                 if (is == false)
                 {
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference(content);
-                    Log.d("TagSampleAppProject", "DatabaseReference  removeValue.\n");
-                    Log.d("TagSampleAppProject", content);
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference(sTarget);
+                    //Log.d("TagSampleAppProject", "DatabaseReference  removeValue.\n");
+                    //Log.d("TagSampleAppProject", content);
                    ref.removeValue();
                 }
             }
@@ -79,6 +85,7 @@ public class PageTwo extends PageView
                 long count = dataSnapshot.getChildrenCount();
                 Log.d("TagSampleAppProject","count="+count);
                 fileDBAdapter.clear();
+                int iCount = 0 ;
                 for(DataSnapshot ds:dataSnapshot.getChildren())
                 {
                     String sKey = ds.getKey().toString() ;
@@ -86,6 +93,8 @@ public class PageTwo extends PageView
                     fileDBAdapter.add(sKey+" "+sValue);
                     //Log.d("TagSampleAppProject","getKey()"+sKey);
                     //Log.d("TagSampleAppProject","getValue()="+sValue);
+                    if (iCount == (count-1)) sTarget = sKey ;
+                    iCount++;
                 }
             }
             @Override
@@ -96,5 +105,19 @@ public class PageTwo extends PageView
         });
         listView.setAdapter(fileDBAdapter);
         addView(view);
+    }
+
+    public String getRandomNumber()
+    {
+        String id = UUID.randomUUID().toString();
+        return id ;
+       /*
+            String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+            return androidId ;
+           */
+       /*
+            String serial = Build.SERIAL;
+            return serial ;
+           */
     }
 }

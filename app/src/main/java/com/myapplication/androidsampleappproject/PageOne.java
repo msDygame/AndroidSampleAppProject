@@ -46,59 +46,18 @@ public class PageOne extends PageView
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         editText = (EditText) view.findViewById(R.id.editText);
         editText.setText(sUrl);
-        final ExecutorService service = Executors.newSingleThreadExecutor();
         httpGetButton.setOnClickListener(new OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                service.submit(new Runnable()
+                String content = editText.getText().toString();
+                boolean is = TextUtils.isEmpty(content);
+                if (is == false)
                 {
-                    @Override
-                    public void run()
-                    {
-                        Request request = new Request.Builder().url(sUrl).build();
-                        try
-                        {
-                            Log.d("TagSampleAppProject", "Button GET  Request.\n");
-                            final Response response = client.newCall(request).execute();
-                            try
-                            {
-                                final String resStr = response.body().string();
-                                //Log.d("TagSampleAppProject", "Request response="+resStr);
-                                JSONObject json = new JSONObject(resStr);
-
-                                int jsonCount =(int)json.getJSONObject("result").get("count");
-                                JSONArray jsonArray = json.getJSONObject("result").getJSONArray("results");
-
-                                int iCount = (int)jsonCount;
-                                //Log.d("TagSampleAppProject", " count="+iCount);
-                                ArrayList<String> arrayName = new ArrayList<>();
-                                ArrayList<String> arrayFile = new ArrayList<>();
-                                ArrayList<String> arrayPath = new ArrayList<>();
-                                for (int i = 0 ; i < iCount ; i++)
-                                {
-                                    final String owner = jsonArray.getJSONObject(i).getString("E_Name");
-                                    final String image = jsonArray.getJSONObject(i).getString("E_Pic_URL");
-                                    final String path = jsonArray.getJSONObject(i).getString("E_URL");
-                                    arrayName.add(owner);
-                                    arrayFile.add(image);
-                                    arrayPath.add(path);
-                                }
-                                recyclerViewAdapter.setData(arrayName,arrayFile,arrayPath);
-                            }
-                            catch (JSONException e)
-                            {
-                                Log.d("TagSampleAppProject", e.toString());
-                            }
-                        }
-                        catch (IOException e)
-                        {
-                            e.printStackTrace();
-                            Log.d("TagSampleAppProject", e.toString());
-                        }
-                    }
-                });
+                    //editText.getText();
+                    getHttpData(sUrl) ;
+                }
             }
         });
         httpPostButton.setOnClickListener(new OnClickListener()
@@ -110,7 +69,8 @@ public class PageOne extends PageView
                 boolean is = TextUtils.isEmpty(content);
                 if (is == false)
                 {
-                    Log.d("TagSampleAppProject", "POST  setOnClickListener.\n");
+                    //editText.getText();
+                    getHttpData(sUrl) ;
                 }
             }
         });
@@ -131,5 +91,57 @@ public class PageOne extends PageView
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(recyclerViewAdapter);
         addView(view);
+    }
+
+    public void getHttpData(String szUrl)
+    {
+        final ExecutorService service = Executors.newSingleThreadExecutor();
+        service.submit(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Request request = new Request.Builder().url(sUrl).build();
+                try
+                {
+                    Log.d("TagSampleAppProject", "Button GET  Request.\n");
+                    final Response response = client.newCall(request).execute();
+                    try
+                    {
+                        final String resStr = response.body().string();
+                        Log.d("TagSampleAppProject", "Request response="+resStr);
+                        JSONObject json = new JSONObject(resStr);
+
+                        int jsonCount =(int)json.getJSONObject("result").get("count");
+                        JSONArray jsonArray = json.getJSONObject("result").getJSONArray("results");
+
+                        int iCount = (int)jsonCount;
+                        //Log.d("TagSampleAppProject", " count="+iCount);
+                        ArrayList<String> arrayName = new ArrayList<>();
+                        ArrayList<String> arrayFile = new ArrayList<>();
+                        ArrayList<String> arrayPath = new ArrayList<>();
+                        for (int i = 0 ; i < iCount ; i++)
+                        {
+                            final String owner = jsonArray.getJSONObject(i).getString("E_Name");
+                            final String image = jsonArray.getJSONObject(i).getString("E_Pic_URL");
+                            final String path = jsonArray.getJSONObject(i).getString("E_URL");
+                            arrayName.add(owner);
+                            arrayFile.add(image);
+                            arrayPath.add(path);
+                        }
+                        recyclerViewAdapter.setData(arrayName,arrayFile,arrayPath);
+                    }
+                    catch (JSONException e)
+                    {
+                        Log.d("TagSampleAppProject", e.toString());
+                    }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                    Log.d("TagSampleAppProject", e.toString());
+                }
+            }
+        });
     }
 }
