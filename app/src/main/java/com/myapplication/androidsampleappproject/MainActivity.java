@@ -27,15 +27,6 @@ public class MainActivity extends AppCompatActivity
         initData();
         initView();
         initListener();
-        //測試TabLayout的Tab的setOnClickListener
-        //方法1
-        //setTablayoutOnClickListenerEnable1();
-        //方法2
-        //setTablayoutOnClickListenerEnable2();
-        //方法3
-        //setTablayoutOnClickListenerEnable3();
-        //方法4
-        //有tablayout的佈局是RelativeLayout的話，tabLayout是無法點擊的，只要將RelativeLayout改成LinearLayout即可。
     }
 
     private void initData()
@@ -51,16 +42,15 @@ public class MainActivity extends AppCompatActivity
     private void initView()
     {
         mTablayout = (TabLayout) findViewById(R.id.tabs);
-        mTablayout.addTab(mTablayout.newTab().setText("HTTP"));
-        mTablayout.addTab(mTablayout.newTab().setText("FIREBASE"));
-        mTablayout.addTab(mTablayout.newTab().setText("VIDEO"));
-        mTablayout.addTab(mTablayout.newTab().setText("WEBVIEW"));
-        mTablayout.addTab(mTablayout.newTab().setText("CALCULATOR"));
+        mTablayout.setupWithViewPager(mViewPager);
+        mTablayout.addTab(mTablayout.newTab().setText("HTTP").setIcon(R.mipmap.ic_launcher));
+        mTablayout.addTab(mTablayout.newTab().setText("FIREBASE").setIcon(R.mipmap.ic_launcher));
+        mTablayout.addTab(mTablayout.newTab().setText("VIDEO").setIcon(R.mipmap.ic_launcher));
+        mTablayout.addTab(mTablayout.newTab().setText("WEBVIEW").setIcon(R.mipmap.ic_launcher));
+        mTablayout.addTab(mTablayout.newTab().setText("CALCULATOR").setIcon(R.mipmap.ic_launcher));
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(new SamplePagerAdapter());
-     //   mTablayout.setupWithViewPager(mViewPager);//字會消失..
-        mTablayout.bringToFront();
     }
 
     private void initListener()
@@ -113,94 +103,6 @@ public class MainActivity extends AppCompatActivity
         public void destroyItem(ViewGroup container, int position, Object object)
         {
             container.removeView((View) object);
-        }
-    }
-    //
-    public void setTablayoutOnClickListenerEnable1()
-    {
-        for (int i = 0; i < mTablayout.getTabCount(); i++)
-        {
-            TabLayout.Tab tab = mTablayout.getTabAt(i);
-            if (tab == null) continue;
-            //tab.setIcon(R.mipmap.ic_launcher);
-            //這裡使用到反射，拿到Tab對像後獲取Class
-            Class c = tab.getClass();
-            try
-            {
-                //Filed 「字段、屬性」的意思,c.getDeclaredField 獲取私有屬性。
-                //"view"是Tab的私有屬性名稱(可查看TabLayout源碼),類型是 TabView,TabLayout私有內部類。
-                Field field = c.getDeclaredField("view");
-                if (field == null) continue;
-                //值為 true 則指示反射的對象在使用時應該取消 Java 語言訪問檢查。值為 false 則指示反射的對象應該實施 Java 語言訪問檢查。
-                field.setAccessible(true); //如果不這樣設定會報錯誤
-                final View view = (View) field.get(tab);
-                if (view == null) continue;
-                // view.setClickable(true);
-                view.setTag(i);
-                view.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View v)
-                    {
-                        int position = (int) view.getTag();
-                        //Log.d("TagSampleAppProject","tab pos1="+position);
-                        mViewPager.setCurrentItem(position, false);
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-    //
-    public void setTablayoutOnClickListenerEnable2()
-    {
-        for (int i = 0; i < mTablayout.getTabCount(); i++)
-        {
-            TabLayout.Tab tab = mTablayout.getTabAt(i);
-            if (tab != null)
-            {
-                //tab.setCustomView(pagerAdapter.getTabView(i));
-                //if (tab.getCustomView() != null)
-                {
-                    //View tabView = (View) tab.getCustomView().getParent();
-                    View tabView = (View)tab.view ;
-                    //tabView.setClickable(true);
-                    tabView.setTag(i);
-                    tabView.setOnClickListener(new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View view)
-                        {
-                            int position = (int) view.getTag();
-                            //Log.d("TagSampleAppProject","tab pos2="+position);
-                            mViewPager.setCurrentItem(position, false);
-                        }
-                    });
-                }
-            }
-        }
-    }
-    //
-    public void setTablayoutOnClickListenerEnable3()
-    {
-        LinearLayout tabStrip = ((LinearLayout)mTablayout.getChildAt(0));
-        for(int i = 0; i < tabStrip.getChildCount(); i++)
-        {
-            //tabStrip.getChildAt(i).setClickable(true);
-            tabStrip.getChildAt(i).setOnClickListener(new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    int position = (int) view.getTag();
-                    //Log.d("TagSampleAppProject","tab pos3="+position);
-                    mViewPager.setCurrentItem(position);
-
-                }
-            });
         }
     }
 }
