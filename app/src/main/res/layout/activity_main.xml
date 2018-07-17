@@ -10,6 +10,7 @@
         android:id="@+id/tabs"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@+id/pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +20,8 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="0dp"
-        android:layout_height="500dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

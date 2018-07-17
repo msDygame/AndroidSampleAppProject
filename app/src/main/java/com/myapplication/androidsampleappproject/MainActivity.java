@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(new SamplePagerAdapter());
      //   mTablayout.setupWithViewPager(mViewPager);//字會消失..
+        mTablayout.bringToFront();
     }
 
     private void initListener()
