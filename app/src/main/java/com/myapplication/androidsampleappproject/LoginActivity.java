@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity
         textView = (TextView) findViewById(R.id.textView) ;
         textView.setText(R.string.login_activity_tips);
         loginButton = (Button) findViewById(R.id.loginButton) ;
-        //loginButton.setEnabled(false);
+        loginButton.setEnabled(false);
         loginButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -317,7 +317,7 @@ public class LoginActivity extends AppCompatActivity
             textView.setText(R.string.default_user_name);
             image.setImageResource(R.mipmap.ic_launcher_round);
             logoutButton.setVisibility(View.INVISIBLE);
-            //loginButton.setEnabled(false);
+            loginButton.setEnabled(false);
         }
         else
         {

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Input words here"
         android:inputType="textMultiLine"/>
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/editText"
-        android:layout_marginTop="109dp"
+        android:layout_marginTop="44dp"
         android:text="ADD" />
 
     <Button
@@ -44,7 +44,7 @@
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="380dp"
         android:layout_above="@+id/textView"
         android:transcriptMode="normal"
         android:layout_alignParentStart="true" />
