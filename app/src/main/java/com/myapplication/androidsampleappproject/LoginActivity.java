@@ -300,7 +300,7 @@ public class LoginActivity extends AppCompatActivity
                         else
                         {
                             // If sign in fails, display a message to the user.
-                            Log.w("TagSampleAppProject", "signInWithCredential:failure", task.getException());
+                            Log.d("TagSampleAppProject", "signInWithCredential:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "FireBase Authentication failed.", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }

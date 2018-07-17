@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="55dp"
+        android:layout_marginTop="65dp"
         android:ems="10"
         android:hint="Input words here"
         android:inputType="textMultiLine"/>
